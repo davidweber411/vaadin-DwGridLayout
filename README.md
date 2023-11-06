@@ -34,3 +34,10 @@ Use it like this:
     grid.addTooltipForComponent(4, 7, "CRAAAAAAAAAAAAAAAZYYYYYY 4,7");
 
 #### Step 3: Profit
+![vaadin-dw-grid-layout-with-border](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/bef7adb7-82c4-4530-8316-113f557a9d46)
+
+![vaadin-dw-grid-layout-without-border](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/015d2d6d-8d50-4796-9ac7-c393517f7e12)
+
+
+
+
