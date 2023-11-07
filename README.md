@@ -10,8 +10,9 @@ An implementation of a grid layout in Vaadin. For every developer who wants the 
 - Create tooltips for each grid cell separately.
 - Display a border if needed.
 - Add striped rows or columns to the grid, starting with the first or the second row/column.
+- Set the width/height of the grid to hard coded values if you need.
 
-- The grid automatically uses the needed size of its components.
+- The grid automatically uses the needed size of its components, if you don't specify its width/height.
 - The grid will show a scrollbar if its width is greater than 100%.
 - The grid will not show empty rows and columns.
 
@@ -48,4 +49,5 @@ Use it like this:
 
 ![image](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/cf91dcc6-a8de-48e4-bcbb-e3429670ebad)
 
+![image](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/0ced52db-787a-4457-8e06-81af2fa56e0c)
 
