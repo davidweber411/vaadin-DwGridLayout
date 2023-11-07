@@ -209,6 +209,25 @@ public class DwGridLayout extends Composite<Div> {
         }
     }
 
+    /**
+     * Sets the width of the grid. By default, the grid uses the sizes which are needed by its components.
+     *
+     * @param width The width.
+     */
+    public void setWidth(String width) {
+        getContent().setWidth(width);
+    }
+
+    /**
+     * Sets the height of the grid. By default, the grid uses the sizes which are needed by its components.
+     *
+     * @param height The height.
+     */
+    public void setHeight(String height) {
+        getContent().setHeight(height);
+    }
+
+
     @SuppressWarnings("unused")
     private Label createDebugCell(int colIndex, int rowIndex) {
         return new Label(colIndex + ":" + rowIndex);
