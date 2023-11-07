@@ -19,6 +19,7 @@ public class DwGridLayout extends Composite<Div> {
     private final static String CSS_CLASS_CELL_CONTENT_DEFAULT = "cell-content-default";
     private final static String CSS_BORDER_STYLE = "1px solid grey";
 
+
     private final int amountOfColumns;
     private final int amountOfRows;
     private boolean displayBorder;
@@ -53,7 +54,7 @@ public class DwGridLayout extends Composite<Div> {
     private void displayBorder() {
         for (int rowIndex = 0; rowIndex < amountOfRows; rowIndex++) {
             colRowCellMatrix[0][rowIndex].getStyle().set("border-left", CSS_BORDER_STYLE);
-            boolean atLeastOneWrapperHasContent = getComponentWrappersOfRow(rowIndex).stream()
+            boolean atLeastOneWrapperHasContent = getCellsOfRow(rowIndex).stream()
                     .anyMatch(compWrapper -> !compWrapper.getClassNames().contains(CSS_CLASS_CELL_CONTENT_DEFAULT));
             if (atLeastOneWrapperHasContent) {
                 for (int columnIndex = 0; columnIndex < amountOfColumns; columnIndex++) {
@@ -63,7 +64,7 @@ public class DwGridLayout extends Composite<Div> {
         }
         for (int columnIndex = 0; columnIndex < amountOfColumns; columnIndex++) {
             colRowCellMatrix[columnIndex][0].getStyle().set("border-top", CSS_BORDER_STYLE);
-            boolean atLeastOneWrapperHasContent = getComponentWrappersOfColumn(columnIndex).stream()
+            boolean atLeastOneWrapperHasContent = getCellsOfColumn(columnIndex).stream()
                     .anyMatch(compWrapper -> !compWrapper.getClassNames().contains(CSS_CLASS_CELL_CONTENT_DEFAULT));
             if (atLeastOneWrapperHasContent) {
                 for (int rowIndex = 0; rowIndex < amountOfRows; rowIndex++) {
@@ -73,7 +74,7 @@ public class DwGridLayout extends Composite<Div> {
         }
     }
 
-    private List<Div> getComponentWrappersOfRow(int rowIndex) {
+    private List<Div> getCellsOfRow(int rowIndex) {
         List<Div> components = new ArrayList<>();
         for (int i = 0; i < amountOfColumns; i++) {
             components.add(colRowCellMatrix[i][rowIndex]);
@@ -81,7 +82,7 @@ public class DwGridLayout extends Composite<Div> {
         return components;
     }
 
-    private List<Div> getComponentWrappersOfColumn(int columnIndex) {
+    private List<Div> getCellsOfColumn(int columnIndex) {
         List<Div> components = new ArrayList<>();
         //noinspection ManualArrayToCollectionCopy
         for (int i = 0; i < amountOfRows; i++) {
@@ -120,10 +121,17 @@ public class DwGridLayout extends Composite<Div> {
         }
     }
 
+    /**
+     * Gets a component of a grid cell specified at the given position.<br>
+     *
+     * @param columnIndex The column index - starting with 0.
+     * @param rowIndex    The row index - starting with 0.
+     * @return The component in the specified cell. Defaults to a simple <code>Div</code>.
+     */
     public Component getComponent(int columnIndex, int rowIndex) {
         validateCoordinates(columnIndex, rowIndex);
-        Div componentWrapper = colRowCellMatrix[columnIndex][rowIndex];
-        return componentWrapper.getChildren().findFirst().orElseThrow();
+        Div cell = colRowCellMatrix[columnIndex][rowIndex];
+        return cell.getChildren().findFirst().orElseThrow();
     }
 
     public void addComponent(int columnIndex, int rowIndex, Component newComponent) {
@@ -138,20 +146,67 @@ public class DwGridLayout extends Composite<Div> {
         reloadGridComposite();
     }
 
+    /**
+     * Sets the ID of the <code>DwGridLayout</code>.
+     *
+     * @param id The specified ID.
+     */
     public void setId(String id) {
         this.getContent().setId(id);
     }
 
+    /**
+     * Displays the cell borders of the grid or not.
+     *
+     * @param displayBorder Displays the border or not.
+     */
     public void setDisplayBorder(boolean displayBorder) {
         this.displayBorder = displayBorder;
     }
 
     /**
+     * Sets a tooltip for a cell specified at the given position.<br>
+     *
      * <b style="color: red;">Beware: Adding a new Component to a position with a tooltip will remove the tooltip.</b>
+     *
+     * @param columnIndex The column index - starting with 0.
+     * @param rowIndex    The row index - starting with 0.
+     * @param tooltip     The text of the tooltip.
      */
     public void addTooltipForComponent(int columnIndex, int rowIndex, String tooltip) {
         colRowCellMatrix[columnIndex][rowIndex].setTitle(tooltip);
         reloadGridComposite();
+    }
+
+    /**
+     * Colors every second row or column to the defined color.
+     *
+     * @param cssColor       A valid CSS color as String. <br>E.g.: "#EAB251"<br>E.g.: "rgb(234, 178, 81)"<br> E.g.: "rgba(234, 178, 81, 0.3)".
+     * @param stripeRows     Colors the rows if true, otherwise the columns.
+     * @param startWithColor Defines if the coloring shall start with the first row/column or with the second.
+     */
+    public void setStriped(String cssColor, boolean stripeRows, boolean startWithColor) {
+        iterateOverMatrixAndExecute((colIndex, rowIndex) -> colRowCellMatrix[colIndex][rowIndex].getStyle().remove("background"));
+
+        List<List<Div>> rowsOrColumns = new ArrayList<>();
+        if (stripeRows) {
+            for (int i = 0; i < amountOfRows; i++) {
+                rowsOrColumns.add(getCellsOfRow(i));
+            }
+        } else {
+            for (int i = 0; i < amountOfColumns; i++) {
+                rowsOrColumns.add(getCellsOfColumn(i));
+            }
+        }
+        rowsOrColumns.removeIf(rowOrColumn -> rowOrColumn.stream().allMatch(div -> div.getClassNames().contains(CSS_CLASS_CELL_CONTENT_DEFAULT)));
+
+        int firstRowIndex = startWithColor ? 0 : 1;
+        for (int i = firstRowIndex; i < rowsOrColumns.size(); i += 2) {
+            List<Div> rowOrColumnComponents = rowsOrColumns.get(i);
+            for (Div component : rowOrColumnComponents) {
+                component.getStyle().set("background", cssColor);
+            }
+        }
     }
 
     @SuppressWarnings("unused")
