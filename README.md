@@ -3,15 +3,17 @@ An implementation of a grid layout in Vaadin. For every developer who wants the 
 
 # Features 
 
-- You can create a grid layout, which displays the added components
-- You can configure the amount of rows and columns
-- You can add components to the grid on specified cells
-- You can get components of the grid of specified cells
-- You can create tooltips for each grid cell separately
-- You can display a border if needed
-- The grid automatically uses the needed size of its components
-- The grid will show a scrollbar if its width is greater than 100%
-- The grid will not show empty rows and columns
+- Create a grid layout, which displays the added components.
+- Configure the amount of rows and columns.
+- Add components to the grid on specified cells.
+- Get components of the grid of specified cells.
+- Create tooltips for each grid cell separately.
+- Display a border if needed.
+- Add striped rows or columns to the grid, starting with the first or the second row/column.
+
+- The grid automatically uses the needed size of its components.
+- The grid will show a scrollbar if its width is greater than 100%.
+- The grid will not show empty rows and columns.
 
 # How to use 
 
@@ -32,12 +34,17 @@ Use it like this:
     grid.addComponent(4, 7, createButtonWithSizeInPx(300, 300));
     grid.addComponent(3, 2, createButtonWithSizeInPx(100, 200));
     grid.addTooltipForComponent(4, 7, "CRAAAAAAAAAAAAAAAZYYYYYY 4,7");
+    grid.setStriped("#EAB251", true, true);
+    grid.setStriped("rgba(234, 178, 81, 0.3)", false, false);
 
 #### Step 3: Profit
 ![vaadin-dw-grid-layout-with-border](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/bef7adb7-82c4-4530-8316-113f557a9d46)
 
 ![vaadin-dw-grid-layout-without-border](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/015d2d6d-8d50-4796-9ac7-c393517f7e12)
 
+![image](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/98751252-4581-48c1-8fab-c60a11da3791)
+
+![image](https://github.com/davidweber411/VaadinDwGridLayout/assets/108978258/3d84bb57-fe64-4ae1-b56d-82dac34f76cd)
 
 
 
